@@ -32,8 +32,8 @@
 --        with a gap.
 --    R5  Levels without a function carry the value 0 (no RA at SL 1 and 2).
 --        "Zero" always means "this threshold never triggers".
---    R6  The static assertions at the end tie the schedule windows to the
---        cycle length, so an edit that breaks the budget does not compile.
+--    R6  The compile-time check ties the schedule windows to the cycle
+--        length, so an edit that breaks the budget does not compile.
 --
 --  [VERIFY] MARKER
 --    Values marked [VERIFY] are transcribed from the DO-185B (TCAS II
@@ -51,9 +51,9 @@
 --    * No deviations are requested by this specification.
 --  ===========================================================================
 
-with Tcas.Types; use Tcas.Types;
-
 pragma SPARK_Mode (On);
+
+with Tcas.Types; use Tcas.Types;
 
 package Tcas.Config
   with Pure
@@ -65,19 +65,18 @@ is
    --  worst-case execution time. The budgets are allocated by the
    --  scheduler (src/ada/scheduler).
 
-   Window_Ownship_Ms   : constant := 150;  --  000 .. 150  ownship ingestion
-   Window_Interrogate_Ms : constant := 300; --  150 .. 450  Mode S traffic
-   Window_Threat_Ms    : constant := 300;  --  450 .. 750  tracks and threats
-   Window_Advisory_Ms  : constant := 150;  --  750 .. 900  RA and coordination
-   Window_Output_Ms    : constant := 100;  --  900 .. 1000 display, audio, BIT
+   Window_Ownship_Ms     : constant := 150;  --  000 .. 150  ownship ingestion
+   Window_Interrogate_Ms : constant := 300;  --  150 .. 450  Mode S traffic
+   Window_Threat_Ms      : constant := 300;  --  450 .. 750  tracks and threats
+   Window_Advisory_Ms    : constant := 150; --  750 .. 900  RA and coordination
+   Window_Output_Ms      : constant := 100; --  900 .. 1000 display, audio, BIT
 
-   --  The five windows must fill the cycle exactly (rule R6). A mismatch
-   --  makes this declaration out of range, so the unit does not compile.
-   Schedule_Check : constant Boolean :=
-     (if Window_Ownship_Ms + Window_Interrogate_Ms + Window_Threat_Ms
-         + Window_Advisory_Ms + Window_Output_Ms = Cycle_Ms
-      then True)
-   with Static;
+   --  The five windows must fill the cycle exactly (rule R6). If the sum
+   --  differs from Cycle_Ms, compilation stops with the message below.
+   pragma Compile_Time_Error
+     (Window_Ownship_Ms + Window_Interrogate_Ms + Window_Threat_Ms
+        + Window_Advisory_Ms + Window_Output_Ms /= Cycle_Ms,
+      "Schedule windows do not add up to Cycle_Ms");
 
    --  Capacity and bounds
 
@@ -104,13 +103,13 @@ is
    --  One row of the table. A zero in an RA field means no RA is issued at
    --  that level (rule R5).
    type Level_Thresholds is record
-      TA_Tau   : Tau_S;             --  traffic advisory tau, seconds
-      RA_Tau   : Tau_S;             --  resolution advisory tau, seconds
-      TA_DMOD  : Range_Ft;          --  TA distance modification, feet
-      RA_DMOD  : Range_Ft;          --  RA distance modification, feet
-      TA_ZTHR  : Altitude_Diff_Ft;  --  TA vertical threshold, feet
-      RA_ZTHR  : Altitude_Diff_Ft;  --  RA vertical threshold, feet
-      RA_ALIM  : Altitude_Diff_Ft;  --  RA vertical separation goal, feet
+      TA_Tau  : Tau_S;             --  traffic advisory tau, seconds
+      RA_Tau  : Tau_S;             --  resolution advisory tau, seconds
+      TA_DMOD : Range_Ft;          --  TA distance modification, feet
+      RA_DMOD : Range_Ft;          --  RA distance modification, feet
+      TA_ZTHR : Altitude_Diff_Ft;  --  TA vertical threshold, feet
+      RA_ZTHR : Altitude_Diff_Ft;  --  RA vertical threshold, feet
+      RA_ALIM : Altitude_Diff_Ft;  --  RA vertical separation goal, feet
    end record;
 
    --  [VERIFY] every row, against DO-185B Tables (sensitivity level
@@ -140,7 +139,7 @@ is
             TA_ZTHR => 850, RA_ZTHR => 600, RA_ALIM => 400),
       7 => (TA_Tau => 48, RA_Tau => 35,
             TA_DMOD => 6_076, RA_DMOD => 6_684,
-            TA_ZTHR => 850, RA_ZTHR => 700, RA_ALIM => 600));
+            TA_ZTHR => 1_200, RA_ZTHR => 700, RA_ALIM => 600));
 
    --  Sensitivity level selection
 
