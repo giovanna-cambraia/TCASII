@@ -40,7 +40,8 @@ package Tcas
   with Pure
 is
 
-   --  version of the TCAS logic this tree implements; Version 7.1 is the one defined by RTCA DO-185B / EUROCAE ED-143 (ASM-001)
+   --  Version of the TCAS logic this tree implements; Version 7.1 is the one
+   --  defined by RTCA DO-185B / EUROCAE ED-143 (ASM-001).
    Logic_Version_Major : constant := 7;
    Logic_Version_Minor : constant := 1;
 

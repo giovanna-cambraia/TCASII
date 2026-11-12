@@ -1,0 +1,46 @@
+# Compiled Object, Library, and Binder Files
+*.o
+*.ali
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+b~*
+b__*
+
+# GPRbuild & GNAT Project Artifacts
+obj/
+obj*/
+lib/
+lib*/
+bin/
+*.lexch
+*.cgpr
+auto.cgpr
+*.d
+*.stderr
+*.stdout
+*.ci
+*.gcov
+*.gcno
+*.gcda
+
+# GNATprove / SPARK Proof Artifacts
+gnatprove/
+*.spark
+*.mlw
+*.why3
+*.ctx
+
+# GNAT Studio / GPS IDE Files
+.gps/
+*.bexch
+*.ide.py
+
+# Editor & OS Artifacts (Windows / MINGW64)
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
