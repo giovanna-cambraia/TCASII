@@ -1,0 +1,65 @@
+--  ===========================================================================
+--  TCAS II - Traffic Alert and Collision Avoidance System
+--  ===========================================================================
+--  File        : tcas2.gpr
+--  Module      : GNAT project file (build, style, proof)
+--  Language    : GNAT project syntax
+--  Assurance   : DO-178C Software Level B (target)
+--
+--  PURPOSE
+--    One project file for the host-side build and for GNATprove. It lists
+--    the Ada source folders, sends every build product to build/, and sets
+--    the compiler, style and proof switches in one place, so a command
+--    line never has to repeat them.
+--
+--  DESIGN RULES
+--    R1  Source folders are listed with "/**", which adds every
+--        subfolder. New packages in an existing folder need no edit here.
+--    R2  Build products go to build/obj and build/bin. Nothing is ever
+--        written into src/, so the source tree stays clean.
+--    R3  Warnings are strict (-gnatwa) and style checks are on (-gnatyg),
+--        so a mistake shows up at compile time. Warnings are not errors
+--        yet (no -gnatwe) while the tree is still small.
+--    R4  The proof level is set here, so "gnatprove -P tcas2.gpr" gives
+--        the same result for everyone.
+--    R5  Ada only for now. The C layer (src/c) is added to Languages when
+--        the first C file exists; the line is in the comment below.
+--
+--  USAGE (from the project root)
+--    gprbuild -P tcas2.gpr                    build everything
+--    gprbuild -P tcas2.gpr -c -gnatc          syntax and semantics only
+--    gnatprove -P tcas2.gpr --mode=check      check SPARK legality
+--    gnatprove -P tcas2.gpr                   run the proofs (level 2)
+--    gprclean -P tcas2.gpr                    remove build products
+--  ===========================================================================
+
+project Tcas2 is
+
+   --  Add "C" here when the first file in src/c is written (rule R5):
+   --  for Languages use ("Ada", "C");
+   for Languages use ("Ada");
+
+   for Source_Dirs use ("src/ada/**");
+
+   for Object_Dir use "build/obj";
+   for Exec_Dir   use "build/bin";
+   for Create_Missing_Dirs use "True";
+
+   package Compiler is
+      for Default_Switches ("Ada") use
+        ("-gnat2012",   --  Ada 2012
+         "-gnatwa",     --  all warnings
+         "-gnatyg",     --  GNAT style check
+         "-gnato",      --  overflow checks on
+         "-fstack-check",
+         "-g");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use
+        ("--level=2",
+         "--report=all",
+         "--warnings=continue");
+   end Prove;
+
+end Tcas2;
