@@ -71,9 +71,7 @@ is
    use type Tcas.Types.Altitude_Ft;
    use type Tcas.Types.Vertical_Rate_Fpm;
 
-   --  ------------------------------------------------------------------
    --  Result of a decode
-   --  ------------------------------------------------------------------
 
    type Decode_Status is
      (Decoded,           --  value is valid and inside its range
@@ -92,9 +90,7 @@ is
       Value  : Tcas.Types.Vertical_Rate_Fpm;
    end record;
 
-   --  ------------------------------------------------------------------
    --  BNR helpers (public so that the tests can check them alone)
-   --  ------------------------------------------------------------------
 
    --  The 19-bit field is two's complement: the span is 2 ** 19 and the
    --  sign bit has the value 2 ** 18.
@@ -110,7 +106,7 @@ is
      Global => null,
      Pre    => Raw <= Port.Data_Max,
      Post   => Sign_Extend'Result in -Sign_Value .. Sign_Value - 1;
-
+     
    --  Signed field divided by a positive divisor, truncated toward zero.
    function Scale (Raw : Port.U32; Divisor : Positive) return Integer is
      (Sign_Extend (Raw) / Divisor)
@@ -123,9 +119,7 @@ is
    Radio_Alt_Divisor    : constant Positive := 32;
    Alt_Rate_Divisor     : constant Positive := 8;
 
-   --  ------------------------------------------------------------------
    --  Decoders
-   --  ------------------------------------------------------------------
 
    --  Label 203. Returns Decoded only for a well-formed, valid word with
    --  this label and a value inside Altitude_Ft.
