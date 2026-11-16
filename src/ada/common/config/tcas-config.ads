@@ -98,6 +98,17 @@ is
    --  interrogations rather than a time; this is a development value.
    Max_Track_Age_Ms : constant Time_Ms := 5_000;
 
+   --  A track needs at least this many updates before it can become a
+   --  traffic advisory or a resolution advisory. One update has no rates
+   --  (Tcas.Tracker rule R4), and a single reply is the uncorroborated
+   --  case of the security analysis.
+   Min_Hits_For_Advisory : constant := 2;
+
+   --  Proximate traffic: displayed, never alerted. 6 NM = 36 456 ft.
+   --  [VERIFY] range and vertical limits against DO-185B.
+   Proximate_Range_Ft : constant Range_Ft          := 36_456;
+   Proximate_Alt_Ft   : constant Altitude_Diff_Ft  := 1_200;
+
    --  Threat thresholds per sensitivity level
 
    --  One row of the table. A zero in an RA field means no RA is issued at
