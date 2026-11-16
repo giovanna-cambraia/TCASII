@@ -53,9 +53,9 @@
 --    * No deviations are requested by this body.
 --  ===========================================================================
 
-with Tcas.Units; use Tcas.Units;
-
 pragma SPARK_Mode (On);
+
+with Tcas.Units; use Tcas.Units;
 
 package body Tcas.Threat is
 

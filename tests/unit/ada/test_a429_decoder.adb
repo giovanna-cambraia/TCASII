@@ -51,7 +51,6 @@
 --    * tcas2.gpr does not list tests/, so the project build never sees
 --      this program (it has a main procedure and is not part of the
 --      product).
---  ===========================================================================
 
 with Ada.Command_Line;
 with Ada.Text_IO;

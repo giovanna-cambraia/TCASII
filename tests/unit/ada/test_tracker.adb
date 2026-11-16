@@ -55,7 +55,6 @@
 --    * The expected numbers in the rate tests are worked out by hand and
 --      written next to each check. If one fails, recheck the arithmetic in
 --      the test before blaming the tracker.
---  ===========================================================================
 
 with Ada.Command_Line;
 with Ada.Text_IO;
@@ -72,9 +71,7 @@ procedure Test_Tracker is
    use type Tr.Track_State;
    use type Tr.Track_Table;
 
-   --  ------------------------------------------------------------------
    --  Test bookkeeping
-   --  ------------------------------------------------------------------
 
    Total  : Natural := 0;
    Failed : Natural := 0;
@@ -88,9 +85,7 @@ procedure Test_Tracker is
       end if;
    end Check;
 
-   --  ------------------------------------------------------------------
    --  Fixtures and helpers
-   --  ------------------------------------------------------------------
 
    Table   : Tr.Track_Table;
    Result  : Tr.Update_Result := Tr.Inserted;
@@ -161,9 +156,7 @@ procedure Test_Tracker is
       end if;
    end Check_Track;
 
-   --  ------------------------------------------------------------------
    --  Group: init
-   --  ------------------------------------------------------------------
 
    procedure Test_Init is
    begin
@@ -188,9 +181,7 @@ procedure Test_Tracker is
              Slot (0) = Tr.No_Track);
    end Test_Init;
 
-   --  ------------------------------------------------------------------
    --  Group: insert
-   --  ------------------------------------------------------------------
 
    procedure Test_Insert is
    begin
@@ -214,9 +205,7 @@ procedure Test_Tracker is
                    16#ABCDEF#, 30_000, 9_000, 10_000, 0, 0, 0, 1);
    end Test_Insert;
 
-   --  ------------------------------------------------------------------
    --  Group: rates
-   --  ------------------------------------------------------------------
 
    procedure Test_Rates is
    begin
@@ -299,9 +288,7 @@ procedure Test_Tracker is
                    7, 150_000, 0, -1_200, 3_000, -10_000, 0, 3);
    end Test_Rates;
 
-   --  ------------------------------------------------------------------
    --  Group: hits
-   --  ------------------------------------------------------------------
 
    procedure Test_Hits is
    begin
@@ -314,9 +301,7 @@ procedure Test_Tracker is
       Check_Track ("hits stop at 255", 10, 1_000, 0, 0, 0, 0, 0, 255);
    end Test_Hits;
 
-   --  ------------------------------------------------------------------
    --  Group: full table
-   --  ------------------------------------------------------------------
 
    procedure Test_Full_Table is
       All_Inserted : Boolean := True;
@@ -360,9 +345,7 @@ procedure Test_Tracker is
       Check ("full: recovery count is 1", Tr.Count (Table) = 1);
    end Test_Full_Table;
 
-   --  ------------------------------------------------------------------
    --  Group: aging
-   --  ------------------------------------------------------------------
 
    procedure Test_Aging is
    begin
@@ -437,9 +420,7 @@ procedure Test_Tracker is
       Check ("reuse: aircraft 3 stays in slot 3", Slot (3) = 3);
    end Test_Aging;
 
-   --  ------------------------------------------------------------------
    --  Group: sweep of position changes and elapsed times (rule T1)
-   --  ------------------------------------------------------------------
 
    function Clamp
      (V   : Long_Long_Integer;
