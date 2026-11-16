@@ -52,7 +52,6 @@
 --    * The body is in tcas-sensitivity.adb; GNATprove proves the
 --      postconditions and the absence of runtime errors there.
 --    * No deviations are requested by this specification.
---  ===========================================================================
 
 pragma SPARK_Mode (On);
 
