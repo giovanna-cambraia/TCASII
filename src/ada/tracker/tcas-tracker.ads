@@ -113,6 +113,15 @@ package Tcas.Tracker is
      Post   => Count'Result <= Max_Tracks;
 
    --  Index of the active track with this address, or No_Track.
+   --
+   --  The postcondition is two-sided:
+   --    * soundness   -- a non-zero result points at a matching Active track;
+   --    * completeness -- if no non-zero result is returned, no matching
+   --                      Active track exists anywhere in the table.
+   --  Completeness is what lets callers (Update in particular) prove that
+   --  writing a fresh Active record with a given Address makes a later
+   --  Find return non-zero. Without it the prover has to unroll Find's
+   --  loop across the package boundary and times out.
    function Find (Table : Track_Table; Address : Mode_S_Address)
      return Natural
    with
@@ -120,9 +129,13 @@ package Tcas.Tracker is
      Post   =>
        Find'Result <= Max_Tracks
        and then
-         (if Find'Result /= No_Track
-          then Table (Find'Result).State = Active
-               and then Table (Find'Result).Address = Address);
+         (if Find'Result /= No_Track then
+            Table (Find'Result).State = Active
+            and then Table (Find'Result).Address = Address
+          else
+            (for all I in Track_Index =>
+               not (Table (I).State = Active
+                    and then Table (I).Address = Address)));
 
    --  Operations
 
