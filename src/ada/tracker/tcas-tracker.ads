@@ -29,9 +29,11 @@
 --        Updates = 1; the threat detector must not act on such a track
 --        alone (rule R6 of the security analysis: no RA from an
 --        uncorroborated track).
---    R5  Intermediate arithmetic stays far below the 32-bit limit and
---        every conversion back into a physical type saturates
---        (Tcas.Units), so no operation can overflow.
+--    R5  Rates are computed in Long_Long_Integer (64 bits, exact), because
+--        a vertical-rate product can reach 127 900 x 60 000, above the
+--        32-bit limit. The result is saturated to a fixed bound before it
+--        returns to Integer, and every conversion into a physical type
+--        saturates (Tcas.Units), so no operation can overflow.
 --    R6  A full table is not an error: Update reports Table_Full and the
 --        table is unchanged. The caller decides what to drop (nearest
 --        range first is the policy of the schedule, section 4C).

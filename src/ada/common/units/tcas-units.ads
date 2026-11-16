@@ -82,6 +82,18 @@ is
       else Tau_S (Value))
    with Global => null;
 
+   function Clamp_Range_Rate (Value : Integer) return Range_Rate_Fps is
+     (if Value < Integer (Range_Rate_Fps'First) then Range_Rate_Fps'First
+      elsif Value > Integer (Range_Rate_Fps'Last) then Range_Rate_Fps'Last
+      else Range_Rate_Fps (Value))
+   with Global => null;
+
+   function Clamp_Time (Value : Integer) return Time_Ms is
+     (if Value < Integer (Time_Ms'First) then Time_Ms'First
+      elsif Value > Integer (Time_Ms'Last) then Time_Ms'Last
+      else Time_Ms (Value))
+   with Global => null;
+
    --  Vertical geometry
 
    --  Signed difference A - B. Altitude_Diff_Ft is wide enough for any
