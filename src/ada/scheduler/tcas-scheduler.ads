@@ -153,7 +153,7 @@ package Tcas.Scheduler is
    with
      Global => null,
      Post   =>
-       Tr.Count (C.Table) = 0
+       (for all I in Track_Index => C.Table (I).State = Tr.Free)
        and then not C.RA.Active
        and then Rs.Is_Consistent (C.RA);
 

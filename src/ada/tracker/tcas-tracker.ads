@@ -143,8 +143,9 @@ package Tcas.Tracker is
    --  assumed valid: call this before the first use.
    procedure Init (Table : out Track_Table)
    with
-     Global => null,
-     Post   => (for all I in Track_Index => Table (I).State = Free);
+     Global            => null,
+     Always_Terminates => True,
+     Post              => (for all I in Track_Index => Table (I).State = Free);
 
    --  Feeds one measurement.
    --    * Address already tracked: the track is refreshed, its rates are
@@ -158,8 +159,9 @@ package Tcas.Tracker is
       M      : Measurement;
       Result : out Update_Result)
    with
-     Global => null,
-     Post   =>
+     Global            => null,
+     Always_Terminates => True,
+     Post              =>
        (case Result is
           when Inserted   =>
             Find (Table'Old, M.Address) = No_Track
@@ -180,8 +182,9 @@ package Tcas.Tracker is
       Elapsed : Time_Ms;
       Dropped : out Natural)
    with
-     Global => null,
-     Post   =>
+     Global            => null,
+     Always_Terminates => True,
+     Post              =>
        Dropped <= Max_Tracks
        and then
          (for all I in Track_Index =>

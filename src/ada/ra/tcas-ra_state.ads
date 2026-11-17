@@ -119,8 +119,9 @@ package Tcas.RA_State is
    --  Starts with no advisory. Call before the first Step.
    procedure Init (S : out State)
    with
-     Global => null,
-     Post   => not S.Active and then Is_Consistent (S);
+     Global            => null,
+     Always_Terminates => True,
+     Post              => not S.Active and then Is_Consistent (S);
 
    --  One cycle of the life cycle. Item is the intruder that the caller
    --  wants followed (normally the most urgent one). Step classifies it
@@ -134,9 +135,10 @@ package Tcas.RA_State is
       Item     : Tr.Track;
       Event    : out RA_Event)
    with
-     Global => null,
-     Pre    => Is_Consistent (S),
-     Post   =>
+     Global            => null,
+     Always_Terminates => True,
+     Pre               => Is_Consistent (S),
+     Post              =>
        Is_Consistent (S)
        --  an event of "no RA" kinds leaves an inactive state
        and then (if Event in No_Event | Cleared then not S.Active)
