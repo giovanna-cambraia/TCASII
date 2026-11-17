@@ -166,4 +166,11 @@ is
    SL6_Upper_Ft : constant Altitude_Ft := 20_000;  --  pressure altitude
    --  Above SL6_Upper_Ft the level is 7.
 
+   --  Pilot response model of an RA. The ownship keeps its current
+   --  vertical rate for the delay, then flies the target rate.
+   --  [VERIFY] both values against DO-185B (5 s initial response,
+   --  1 500 ft/min for a Climb or Descend advisory).
+   RA_Response_Delay_S  : constant Tau_S             := 5;
+   RA_Target_Rate_Fpm   : constant Vertical_Rate_Fpm := 1_500;
+
 end Tcas.Config;
