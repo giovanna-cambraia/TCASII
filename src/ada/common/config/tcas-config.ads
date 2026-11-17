@@ -173,4 +173,9 @@ is
    RA_Response_Delay_S  : constant Tau_S             := 5;
    RA_Target_Rate_Fpm   : constant Vertical_Rate_Fpm := 1_500;
 
+   --  Number of consecutive cycles in which the threat is no longer a
+   --  resolution advisory before an active RA is cleared.
+   --  [VERIFY] against DO-185B (clear-of-conflict logic).
+   RA_Clear_Cycles : constant := 2;
+
 end Tcas.Config;
