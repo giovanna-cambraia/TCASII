@@ -178,4 +178,17 @@ is
    --  [VERIFY] against DO-185B (clear-of-conflict logic).
    RA_Clear_Cycles : constant := 2;
 
+   --  Mode S transponder reply delay: time between the end of our
+   --  interrogation and the start of the reply. [VERIFY] against DO-185B
+   --  and the transceiver ICD (RISK-001).
+   Mode_S_Reply_Delay_Ns : constant := 128_000;
+
+   --  One-way distance per nanosecond of round-trip time, as a fraction:
+   --  c / 2 = 0.491 785 528 2 ft/ns (c = 299 792 458 m/s, 0.3048 m per ft),
+   --  rounded here to 0.491 785 53 (relative error < 1e-7; at 6 NM this is
+   --  below 0.01 ft). Kept as an integer numerator/denominator pair so the
+   --  conversion can widen before multiplying and stay in exact arithmetic.
+   Ft_Per_Ns_Num : constant := 49_178_553;
+   Ft_Per_Ns_Den : constant := 100_000_000;
+
 end Tcas.Config;
